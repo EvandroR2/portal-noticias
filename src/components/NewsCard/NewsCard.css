@@ -47,6 +47,19 @@
 }
 
 .news-card time {
+  display: block;
   color: #6b7280;
   font-size: 14px;
+}
+
+.news-card__link {
+  display: inline-block;
+  margin-top: 20px;
+  color: #2563eb;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.news-card__link:hover {
+  text-decoration: underline;
 }
