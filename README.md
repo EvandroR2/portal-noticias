@@ -1,75 +1,165 @@
-# React + TypeScript + Vite
+# Portal de Notícias
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Portal de notícias desenvolvido com React, TypeScript e Supabase. O projeto permite consultar notícias armazenadas em um banco de dados PostgreSQL e visualizar o conteúdo completo em páginas individuais.
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Listagem de notícias publicadas
+- Integração com PostgreSQL pelo Supabase
+- Página de detalhes de cada notícia
+- Rotas dinâmicas com React Router
+- Ordenação das notícias por data
+- Estados de carregamento e tratamento de erros
+- Layout responsivo
+- Proteção dos dados com Row Level Security (RLS)
 
-## React Compiler
+## Tecnologias
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- TypeScript
+- Vite
+- React Router
+- Supabase
+- PostgreSQL
+- CSS
 
-## Expanding the ESLint configuration
+## Estrutura do projeto
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+src/
+├── components/
+│   └── NewsCard/
+├── lib/
+│   └── supabase.ts
+├── pages/
+│   ├── Home/
+│   └── NewsDetails/
+├── services/
+│   └── newsService.ts
+├── types/
+│   └── News.ts
+├── App.tsx
+└── main.tsx
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Como executar
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Clone o repositório:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+git clone https://github.com/EvandroR2/portal-noticias.git
 ```
+
+Entre na pasta:
+
+```bash
+cd portal-noticias
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Crie um arquivo `.env.local` na raiz do projeto:
+
+```env
+VITE_SUPABASE_URL=https://seu-projeto.supabase.co
+VITE_SUPABASE_ANON_KEY=sua-chave-publica
+```
+
+Inicie o servidor:
+
+```bash
+npm run dev
+```
+
+A aplicação ficará disponível normalmente em:
+
+```text
+http://localhost:5173
+```
+
+## Banco de dados
+
+O projeto utiliza uma tabela `noticias` no Supabase com a seguinte estrutura:
+
+```text
+id
+titulo
+resumo
+conteudo
+categoria
+imagem_url
+publicada
+criado_em
+atualizado_em
+```
+
+A leitura pública permite apenas notícias com:
+
+```text
+publicada = true
+```
+
+As permissões são controladas por políticas de Row Level Security do Supabase.
+
+## Segurança
+
+O arquivo `.env.local` não deve ser enviado ao GitHub.
+
+Nunca coloque no frontend:
+
+- senha do banco de dados;
+- chave `service_role`;
+- secret key;
+- string de conexão administrativa.
+
+A chave `publishable` do Supabase é utilizada no navegador em conjunto com políticas RLS.
+
+## Comandos disponíveis
+
+Executar em desenvolvimento:
+
+```bash
+npm run dev
+```
+
+Verificar o código:
+
+```bash
+npm run lint
+```
+
+Gerar a versão de produção:
+
+```bash
+npm run build
+```
+
+Visualizar a versão gerada:
+
+```bash
+npm run preview
+```
+
+## Próximas funcionalidades
+
+- Autenticação administrativa
+- Painel de gerenciamento
+- Cadastro de notícias
+- Edição e exclusão
+- Publicação e armazenamento de rascunhos
+- Envio de imagens pelo Supabase Storage
+- Pesquisa por título
+- Filtro por categoria
+- Paginação
+- Publicação na Vercel
+
+## Autor
+
+Desenvolvido por **Evandro Edgariano**.
+
+- GitHub: [EvandroR2](https://github.com/EvandroR2)
+- LinkedIn: [Evandro Edgariano](https://www.linkedin.com/in/evandro-edgariano-b8b627184/)
