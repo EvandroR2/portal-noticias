@@ -1,165 +1,77 @@
 # Portal de Notícias
 
-Portal de notícias desenvolvido com React, TypeScript e Supabase. O projeto permite consultar notícias armazenadas em um banco de dados PostgreSQL e visualizar o conteúdo completo em páginas individuais.
+Portal de notícias desenvolvido com Next.js, React, TypeScript e Supabase. As páginas públicas são renderizadas no servidor e cada notícia possui uma URL baseada em `slug`.
 
 ## Funcionalidades
 
-- Listagem de notícias publicadas
-- Integração com PostgreSQL pelo Supabase
-- Página de detalhes de cada notícia
-- Rotas dinâmicas com React Router
-- Ordenação das notícias por data
-- Estados de carregamento e tratamento de erros
-- Layout responsivo
-- Proteção dos dados com Row Level Security (RLS)
+- listagem de notícias publicadas;
+- página individual em `/noticias/[slug]`;
+- metadados dinâmicos para SEO e compartilhamento;
+- sitemap e robots gerados pelo Next.js;
+- página 404;
+- imagens otimizadas pelo Next.js;
+- leitura pública protegida pelas políticas RLS do Supabase.
 
-## Tecnologias
+## Variáveis de ambiente
 
-- React
-- TypeScript
-- Vite
-- React Router
-- Supabase
-- PostgreSQL
-- CSS
+Crie `.env.local` na raiz:
 
-## Estrutura do projeto
-
-```text
-src/
-├── components/
-│   └── NewsCard/
-├── lib/
-│   └── supabase.ts
-├── pages/
-│   ├── Home/
-│   └── NewsDetails/
-├── services/
-│   └── newsService.ts
-├── types/
-│   └── News.ts
-├── App.tsx
-└── main.tsx
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sua-chave-publica
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-## Como executar
+Nunca use no frontend a chave `service_role`, senha do banco ou string de conexão administrativa.
 
-Clone o repositório:
-
-```bash
-git clone https://github.com/EvandroR2/portal-noticias.git
-```
-
-Entre na pasta:
-
-```bash
-cd portal-noticias
-```
-
-Instale as dependências:
+## Execução
 
 ```bash
 npm install
-```
-
-Crie um arquivo `.env.local` na raiz do projeto:
-
-```env
-VITE_SUPABASE_URL=https://seu-projeto.supabase.co
-VITE_SUPABASE_ANON_KEY=sua-chave-publica
-```
-
-Inicie o servidor:
-
-```bash
 npm run dev
 ```
 
-A aplicação ficará disponível normalmente em:
+A aplicação ficará disponível em `http://localhost:3000`.
 
-```text
-http://localhost:5173
+## Validação
+
+```bash
+npm run lint
+npm run build
 ```
 
-## Banco de dados
+## Estrutura
 
-O projeto utiliza uma tabela `noticias` no Supabase com a seguinte estrutura:
+```text
+app/                Rotas e páginas do Next.js
+components/         Componentes reutilizáveis
+lib/supabase/       Cliente Supabase para o servidor
+services/           Consultas de notícias
+types/              Tipos TypeScript
+public/             Arquivos públicos
+```
+
+## Tabela `noticias`
+
+A aplicação utiliza, entre outros, os campos:
 
 ```text
 id
+slug
 titulo
 resumo
 conteudo
 categoria
 imagem_url
+imagem_alt
+autor
 publicada
+publicado_em
 criado_em
 atualizado_em
+seo_titulo
+seo_descricao
+imagem_social_url
 ```
 
-A leitura pública permite apenas notícias com:
-
-```text
-publicada = true
-```
-
-As permissões são controladas por políticas de Row Level Security do Supabase.
-
-## Segurança
-
-O arquivo `.env.local` não deve ser enviado ao GitHub.
-
-Nunca coloque no frontend:
-
-- senha do banco de dados;
-- chave `service_role`;
-- secret key;
-- string de conexão administrativa.
-
-A chave `publishable` do Supabase é utilizada no navegador em conjunto com políticas RLS.
-
-## Comandos disponíveis
-
-Executar em desenvolvimento:
-
-```bash
-npm run dev
-```
-
-Verificar o código:
-
-```bash
-npm run lint
-```
-
-Gerar a versão de produção:
-
-```bash
-npm run build
-```
-
-Visualizar a versão gerada:
-
-```bash
-npm run preview
-```
-
-## Próximas funcionalidades
-
-- Autenticação administrativa
-- Painel de gerenciamento
-- Cadastro de notícias
-- Edição e exclusão
-- Publicação e armazenamento de rascunhos
-- Envio de imagens pelo Supabase Storage
-- Pesquisa por título
-- Filtro por categoria
-- Paginação
-- Publicação na Vercel
-
-## Autor
-
-Desenvolvido por **Evandro Edgariano**.
-
-- GitHub: [EvandroR2](https://github.com/EvandroR2)
-- LinkedIn: [Evandro Edgariano](https://www.linkedin.com/in/evandro-edgariano-b8b627184/)
+O campo `slug` deve ser único. A política RLS deve permitir leitura anônima apenas quando `publicada = true`.

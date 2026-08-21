@@ -1,0 +1,27 @@
+:root { font-family: system-ui, "Segoe UI", Roboto, sans-serif; color: #1e293b; background: #f8fafc; }
+* { box-sizing: border-box; }
+html { min-width: 320px; background: #f8fafc; }
+body { min-height: 100vh; margin: 0; }
+h1, h2, p { margin-top: 0; }
+a:focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
+.home { min-height: 100vh; background-color: #f8fafc; }
+.home__header { padding: 80px 24px; color: #fff; text-align: center; background: linear-gradient(135deg, #111827, #1d4ed8); }
+.home__header span { display: block; margin-bottom: 12px; color: #93c5fd; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.home__header h1 { margin-bottom: 16px; font-size: clamp(38px, 6vw, 64px); }
+.home__header p { max-width: 620px; margin: 0 auto; color: #dbeafe; font-size: 18px; line-height: 1.6; }
+.home__news { width: min(1100px, calc(100% - 32px)); margin: 0 auto; padding: 60px 0; }
+.home__news > h2 { margin-bottom: 32px; color: #111827; font-size: 32px; }
+.home__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.news-details { min-height: 100vh; padding: 60px 20px; background-color: #f8fafc; }
+.news-details article { width: min(800px, 100%); margin: 0 auto; }
+.news-details__back { display: inline-block; margin-bottom: 40px; color: #1d4ed8; font-weight: 700; text-decoration: none; }
+.news-details__back:hover, .news-details__back:focus-visible { text-decoration: underline; }
+.news-details__category { display: block; margin-bottom: 16px; color: #1d4ed8; font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.news-details h1 { margin-bottom: 20px; color: #111827; font-size: clamp(36px, 6vw, 60px); line-height: 1.1; }
+.news-details__summary { margin-bottom: 20px; color: #475569; font-size: 21px; line-height: 1.6; }
+.news-details time { color: #64748b; font-size: 14px; }
+.news-details__image { display: block; width: 100%; height: auto; max-height: 480px; margin: 40px 0; object-fit: cover; border-radius: 16px; }
+.news-details__content { margin-top: 40px; color: #1e293b; font-size: 18px; line-height: 1.8; white-space: pre-line; }
+.status-page { display: grid; min-height: 100vh; place-content: center; gap: 16px; padding: 80px 20px; text-align: center; }
+@media (max-width: 900px) { .home__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .home__header { padding: 60px 20px; } .home__grid { grid-template-columns: 1fr; } }
