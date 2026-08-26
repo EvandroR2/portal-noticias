@@ -5,6 +5,7 @@ const supabaseHostname = supabaseUrl ? new URL(supabaseUrl).hostname : undefined
 
 const nextConfig: NextConfig = {
   agentRules: false,
+  cacheComponents: true,
   images: supabaseHostname
     ? { remotePatterns: [{ protocol: "https", hostname: supabaseHostname }] }
     : undefined,

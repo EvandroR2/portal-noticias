@@ -6,7 +6,6 @@ import { buscarNoticiaPorSlug } from "../../../services/newsService";
 
 type PaginaNoticiaProps = { params: Promise<{ slug: string }> };
 
-export const dynamic = "force-dynamic";
 
 export default async function PaginaNoticia({ params }: PaginaNoticiaProps) {
   const { slug } = await params;
