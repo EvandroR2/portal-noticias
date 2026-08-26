@@ -12,11 +12,57 @@ export default async function PaginaNoticia({ params }: PaginaNoticiaProps) {
   const noticia = await buscarNoticiaPorSlug(slug);
   if (!noticia) notFound();
 
+  const siteUrl = (
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+  ).replace(/\/$/, "");
+
+  const urlNoticia = `${siteUrl}/noticias/${noticia.slug}`;
+
+  const imagem =
+    noticia.imagem_social_url ?? noticia.imagem_url;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: noticia.titulo,
+    description: noticia.seo_descricao ?? noticia.resumo,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": urlNoticia,
+    },
+    url: urlNoticia,
+    image: imagem ? [imagem] : undefined,
+    datePublished: noticia.publicado_em,
+    dateModified: noticia.atualizado_em,
+    author: noticia.autor
+      ? {
+        "@type": "Person",
+        name: noticia.autor,
+      }
+      : {
+        "@type": "Organization",
+        name: "Portal de Notícias",
+      },
+    publisher: {
+      "@type": "Organization",
+      name: "Portal de Notícias",
+    },
+    inLanguage: "pt-BR",
+    isAccessibleForFree: true,
+  };
+
   const dataFormatada = new Intl.DateTimeFormat("pt-BR", { dateStyle: "long" })
     .format(new Date(noticia.publicado_em));
 
   return (
     <main className="news-details">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+
+        }}
+      />
       <article>
         <Link className="news-details__back" href="/">← Voltar às notícias</Link>
         {noticia.categoria && <span className="news-details__category">{noticia.categoria}</span>}
