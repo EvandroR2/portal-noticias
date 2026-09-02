@@ -1,5 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
-import { criarSupabaseServer } from "../lib/supabase/server";
+import { criarSupabasePublico } from "../lib/supabase/public";
 import type { Noticia } from "../types/News";
 
 export async function buscarNoticiasPublicadas(): Promise<Noticia[]> {
@@ -13,7 +13,7 @@ export async function buscarNoticiasPublicadas(): Promise<Noticia[]> {
 
   cacheTag("noticias");
 
-  const supabase = criarSupabaseServer();
+  const supabase = criarSupabasePublico();
 
   const { data, error } = await supabase
     .from("noticias")
@@ -37,7 +37,7 @@ export async function buscarNoticiaPorSlug(slug: string): Promise<Noticia | null
 
   cacheTag("noticias", `noticia:${slug}`);
 
-  const supabase = criarSupabaseServer();
+  const supabase = criarSupabasePublico();
   const { data, error } = await supabase
     .from("noticias")
     .select("*")
