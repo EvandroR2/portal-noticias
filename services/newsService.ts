@@ -1,8 +1,8 @@
 import { cacheLife, cacheTag } from "next/cache";
-import { criarSupabasePublico } from "../lib/supabase/public";
-import type { Noticia } from "../types/News";
+import { obterApiUrl } from "../lib/api";
+import type { NoticiaDetalhe, NoticiaResumo } from "../types/News";
 
-export async function buscarNoticiasPublicadas(): Promise<Noticia[]> {
+export async function buscarNoticiasPublicadas(): Promise<NoticiaResumo[]> {
   "use cache";
 
   cacheLife({
@@ -13,21 +13,19 @@ export async function buscarNoticiasPublicadas(): Promise<Noticia[]> {
 
   cacheTag("noticias");
 
-  const supabase = criarSupabasePublico();
+  const resposta = await fetch(`${obterApiUrl()}/api/Noticias`);
 
-  const { data, error } = await supabase
-    .from("noticias")
-    .select("id, slug, titulo, resumo, categoria, imagem_url, imagem_alt, autor, publicado_em")
-    .eq("publicada", true)
-    .order("publicado_em", { ascending: false })
-    .limit(12);
+  if (!resposta.ok) {
+    throw new Error("Não foi possível carregar as notícias.");
+  }
 
-  if (error) throw new Error("Não foi possível carregar as notícias.");
-  return (data ?? []) as Noticia[];
+  return (await resposta.json()) as NoticiaResumo[];
 }
 
-export async function buscarNoticiaPorSlug(slug: string): Promise<Noticia | null> {
-"use cache";
+export async function buscarNoticiaPorSlug(
+  slug: string,
+): Promise<NoticiaDetalhe | null> {
+  "use cache";
 
   cacheLife({
     stale: 300,
@@ -37,14 +35,15 @@ export async function buscarNoticiaPorSlug(slug: string): Promise<Noticia | null
 
   cacheTag("noticias", `noticia:${slug}`);
 
-  const supabase = criarSupabasePublico();
-  const { data, error } = await supabase
-    .from("noticias")
-    .select("*")
-    .eq("slug", slug)
-    .eq("publicada", true)
-    .maybeSingle();
+  const resposta = await fetch(
+    `${obterApiUrl()}/api/Noticias/${encodeURIComponent(slug)}`,
+  );
 
-  if (error) throw new Error("Não foi possível carregar a notícia.");
-  return data as Noticia | null;
+  if (resposta.status === 404) return null;
+
+  if (!resposta.ok) {
+    throw new Error("Não foi possível carregar a notícia.");
+  }
+
+  return (await resposta.json()) as NoticiaDetalhe;
 }

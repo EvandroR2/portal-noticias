@@ -1,7 +1,12 @@
 import NewsCard from "../components/NewsCard/NewsCard";
 import { buscarNoticiasPublicadas } from "../services/newsService";
+import { connection } from "next/server";
+
+export const instant = false;
 
 export default async function Home() {
+  await connection();
+
   const noticias = await buscarNoticiasPublicadas();
 
   return (

@@ -19,21 +19,21 @@ export default async function PaginaNoticia({ params }: PaginaNoticiaProps) {
   const urlNoticia = `${siteUrl}/noticias/${noticia.slug}`;
 
   const imagem =
-    noticia.imagem_social_url ?? noticia.imagem_url;
+    noticia.imagemSocialUrl ?? noticia.imagemUrl;
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
     headline: noticia.titulo,
-    description: noticia.seo_descricao ?? noticia.resumo,
+    description: noticia.seoDescricao ?? noticia.resumo,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": urlNoticia,
     },
     url: urlNoticia,
     image: imagem ? [imagem] : undefined,
-    datePublished: noticia.publicado_em,
-    dateModified: noticia.atualizado_em,
+    datePublished: noticia.publicadoEm,
+    dateModified: noticia.atualizadoEm,
     author: noticia.autor
       ? {
         "@type": "Person",
@@ -52,7 +52,7 @@ export default async function PaginaNoticia({ params }: PaginaNoticiaProps) {
   };
 
   const dataFormatada = new Intl.DateTimeFormat("pt-BR", { dateStyle: "long" })
-    .format(new Date(noticia.publicado_em));
+    .format(new Date(noticia.publicadoEm));
 
   return (
     <main className="news-details">
@@ -68,10 +68,10 @@ export default async function PaginaNoticia({ params }: PaginaNoticiaProps) {
         {noticia.categoria && <span className="news-details__category">{noticia.categoria}</span>}
         <h1>{noticia.titulo}</h1>
         <p className="news-details__summary">{noticia.resumo}</p>
-        <time dateTime={noticia.publicado_em}>Publicado em {dataFormatada}</time>
-        {noticia.imagem_url && (
-          <Image className="news-details__image" src={noticia.imagem_url}
-            alt={noticia.imagem_alt ?? ""} width={1200} height={675} priority
+        <time dateTime={noticia.publicadoEm}>Publicado em {dataFormatada}</time>
+        {noticia.imagemUrl && (
+          <Image className="news-details__image" src={noticia.imagemUrl}
+            alt={noticia.imagemAlt ?? ""} width={1200} height={675} priority
             sizes="(max-width: 840px) 100vw, 800px" />
         )}
         <div className="news-details__content">{noticia.conteudo}</div>
@@ -85,18 +85,18 @@ export async function generateMetadata({ params }: PaginaNoticiaProps): Promise<
   const noticia = await buscarNoticiaPorSlug(slug);
   if (!noticia) return { title: "Notícia não encontrada" };
 
-  const titulo = noticia.seo_titulo ?? noticia.titulo;
-  const descricao = noticia.seo_descricao ?? noticia.resumo;
-  const imagem = noticia.imagem_social_url ?? noticia.imagem_url;
+  const titulo = noticia.seoTitulo ?? noticia.titulo;
+  const descricao = noticia.seoDescricao ?? noticia.resumo;
+  const imagem = noticia.imagemSocialUrl ?? noticia.imagemUrl;
   return {
     title: titulo,
     description: descricao,
     alternates: { canonical: `/noticias/${noticia.slug}` },
     openGraph: {
       type: "article", title: titulo, description: descricao,
-      publishedTime: noticia.publicado_em, modifiedTime: noticia.atualizado_em,
+      publishedTime: noticia.publicadoEm, modifiedTime: noticia.atualizadoEm,
       authors: noticia.autor ? [noticia.autor] : undefined,
-      images: imagem ? [{ url: imagem, alt: noticia.imagem_alt ?? noticia.titulo }] : undefined,
+      images: imagem ? [{ url: imagem, alt: noticia.imagemAlt ?? noticia.titulo }] : undefined,
     },
   };
 }

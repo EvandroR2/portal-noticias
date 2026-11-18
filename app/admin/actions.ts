@@ -1,12 +1,14 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { criarSupabaseServer } from "../../lib/supabase/server";
 
 export async function sair() {
-  const supabase = await criarSupabaseServer();
+  const cookieStore = await cookies();
 
-  await supabase.auth.signOut();
+  cookieStore.delete("portal_token");
+  cookieStore.delete("portal_nome");
+  cookieStore.delete("portal_perfis");
 
   redirect("/login");
 }

@@ -1,18 +1,22 @@
-export type Noticia = {
+export type NoticiaResumo = {
   id: number;
   slug: string;
   titulo: string;
   resumo: string;
-  conteudo: string;
   categoria: string | null;
-  imagem_url: string | null;
-  imagem_alt: string | null;
+  imagemUrl: string | null;
+  imagemAlt: string | null;
   autor: string | null;
+  publicadoEm: string;
+};
+
+export type NoticiaDetalhe = NoticiaResumo & {
+  conteudo: string;
+  fonteUrl: string | null;
   publicada: boolean;
-  publicado_em: string;
-  criado_em: string;
-  atualizado_em: string;
-  seo_titulo: string | null;
-  seo_descricao: string | null;
-  imagem_social_url: string | null;
+  criadoEm: string;
+  atualizadoEm: string;
+  seoTitulo: string | null;
+  seoDescricao: string | null;
+  imagemSocialUrl: string | null;
 };

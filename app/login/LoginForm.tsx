@@ -2,7 +2,6 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { criarSupabaseBrowser } from "../../lib/supabase/client";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -18,35 +17,21 @@ export default function LoginForm() {
     setErro("");
     setCarregando(true);
 
-    const supabase = criarSupabaseBrowser();
+    try {
+      const resposta = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha }),
+      });
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password: senha,
-    });
-
-    if (error || !data.user) {
-      setErro("E-mail ou senha inválidos.");
-      setCarregando(false);
-      return;
-    }
-
-    const { data: perfil, error: erroPerfil } = await supabase
-      .from("profiles")
-      .select("id, nome, funcao, ativo")
-      .eq("id", data.user.id)
-      .maybeSingle();
-
-    if (erroPerfil || !perfil) {
-      await supabase.auth.signOut();
-      setErro("Não foi possível localizar seu perfil.");
-      setCarregando(false);
-      return;
-    }
-
-    if (!perfil.ativo) {
-      await supabase.auth.signOut();
-      setErro("Este usuário está desativado.");
+      if (!resposta.ok) {
+        const dados = await resposta.json().catch(() => null);
+        setErro(dados?.mensagem ?? "E-mail ou senha inválidos.");
+        setCarregando(false);
+        return;
+      }
+    } catch {
+      setErro("Não foi possível conectar ao servidor.");
       setCarregando(false);
       return;
     }
