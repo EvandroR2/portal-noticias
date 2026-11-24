@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { NoticiaResumo } from "../../types/News";
+import ExternalImage from "../ExternalImage/ExternalImage";
 import "./NewsCard.css";
 
 type NewsCardProps = { noticia: NoticiaResumo };
@@ -12,9 +12,13 @@ export default function NewsCard({ noticia }: NewsCardProps) {
   return (
     <article className="news-card">
       {noticia.imagemUrl && (
-        <Image className="news-card__image" src={noticia.imagemUrl}
-          alt={noticia.imagemAlt ?? ""} width={640} height={360}
-          sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" />
+        <ExternalImage
+          className="news-card__image"
+          src={noticia.imagemUrl}
+          alt={noticia.imagemAlt ?? ""}
+          width={640}
+          height={360}
+        />
       )}
       <div className="news-card__content">
         {noticia.categoria && <span className="news-card__category">{noticia.categoria}</span>}

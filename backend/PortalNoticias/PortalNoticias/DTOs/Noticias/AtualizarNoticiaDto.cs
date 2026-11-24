@@ -15,14 +15,16 @@ public class AtualizarNoticiaDto
 
     public string? Categoria { get; set; }
 
-    [Url]
+    [PortalNoticias.Validation.HttpUrl]
+    [StringLength(2048)]
     public string? ImagemUrl { get; set; }
 
     public string? ImagemAlt { get; set; }
 
     public string? Autor { get; set; }
 
-    [Url]
+    [PortalNoticias.Validation.HttpUrl]
+    [StringLength(2048)]
     public string? FonteUrl { get; set; }
 
     public bool Publicada { get; set; }
@@ -31,6 +33,7 @@ public class AtualizarNoticiaDto
 
     public string? SeoDescricao { get; set; }
 
-    [Url]
+    [PortalNoticias.Validation.HttpUrl]
+    [StringLength(2048)]
     public string? ImagemSocialUrl { get; set; }
 }

@@ -39,6 +39,8 @@ a:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
 .news-details time { color: var(--text-muted); font-size: 14px; }
 .news-details__image { display: block; width: 100%; height: auto; max-height: 480px; margin: 40px 0; object-fit: cover; border-radius: 16px; }
 .news-details__content { margin-top: 40px; color: var(--text); font-size: 18px; line-height: 1.8; white-space: pre-line; }
+.external-image--fallback { display: grid; min-height: 220px; color: var(--text-muted); background: var(--surface-elevated); border: 1px solid var(--border); place-items: center; }
+.external-image--fallback span { padding: 16px; font-size: 14px; font-weight: 700; text-align: center; }
 .status-page { display: grid; min-height: 100vh; place-content: center; gap: 16px; padding: 80px 20px; text-align: center; }
 @media (max-width: 900px) { .home__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .home__header { padding: 60px 20px; } .home__grid { grid-template-columns: 1fr; } }

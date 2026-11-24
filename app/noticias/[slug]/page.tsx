@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ExternalImage from "../../../components/ExternalImage/ExternalImage";
 import { buscarNoticiaPorSlug } from "../../../services/newsService";
 
 type PaginaNoticiaProps = { params: Promise<{ slug: string }> };
@@ -70,9 +70,14 @@ export default async function PaginaNoticia({ params }: PaginaNoticiaProps) {
         <p className="news-details__summary">{noticia.resumo}</p>
         <time dateTime={noticia.publicadoEm}>Publicado em {dataFormatada}</time>
         {noticia.imagemUrl && (
-          <Image className="news-details__image" src={noticia.imagemUrl}
-            alt={noticia.imagemAlt ?? ""} width={1200} height={675} priority
-            sizes="(max-width: 840px) 100vw, 800px" />
+          <ExternalImage
+            className="news-details__image"
+            src={noticia.imagemUrl}
+            alt={noticia.imagemAlt ?? ""}
+            width={1200}
+            height={675}
+            priority
+          />
         )}
         <div className="news-details__content">{noticia.conteudo}</div>
       </article>
